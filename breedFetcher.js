@@ -14,10 +14,15 @@ const fetchBreedDescription = function (breedName, callback) {
     } else {
       const data = JSON.parse(body);
       // If improper breed they'll get no data empty array
-      if (data.length < 1) {
-        callback(null, data);
+      if (data === []) {
+        let errorString = "You searched for a breed that doesn't exist";
+        console.log(errorString);
+        callback(null, errorString);
       } else {
-        callback(null, data[0].description);
+        if (data.length > 1 && data[0].description === undefined) {
+          let errorString = `We don't have a description for this breed`;
+          callback(null, errorString);
+        } else callback(null, data[0].description);
       }
     }
   });
